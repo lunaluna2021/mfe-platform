@@ -1,0 +1,23 @@
+{
+  "MONTHLY_ACTIVITY": [
+    { "NEW_CUSTOMERS": 1, "VISITS": 2 },
+    { "NEW_CUSTOMERS": 0, "VISITS": 3 },
+    { "NEW_CUSTOMERS": 2, "VISITS": 4 },
+    { "NEW_CUSTOMERS": 1, "VISITS": 2 },
+    { "NEW_CUSTOMERS": 0, "VISITS": 5 },
+    { "NEW_CUSTOMERS": 3, "VISITS": 6 },
+    { "NEW_CUSTOMERS": 1, "VISITS": 4 },
+    { "NEW_CUSTOMERS": 2, "VISITS": 7 },
+    { "NEW_CUSTOMERS": 0, "VISITS": 3 },
+    { "NEW_CUSTOMERS": 1, "VISITS": 5 },
+    { "NEW_CUSTOMERS": 2, "VISITS": 8 },
+    { "NEW_CUSTOMERS": 1, "VISITS": 4 }
+  ],
+  "CUSTOMERS_BY_INDUSTRY": [
+    { "INDUSTRY": "軟體", "CUSTOMER_COUNT": 3 },
+    { "INDUSTRY": "食品", "CUSTOMER_COUNT": 2 },
+    { "INDUSTRY": "物流", "CUSTOMER_COUNT": 2 },
+    { "INDUSTRY": "設計", "CUSTOMER_COUNT": 1 },
+    { "INDUSTRY": "未分類", "CUSTOMER_COUNT": 1 }
+  ]
+}

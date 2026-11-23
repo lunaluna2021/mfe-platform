@@ -13,7 +13,8 @@
     "serve:host": "nx serve host",
     "build": "nx run-many -t build -p host customer-mfe calendar-mfe report-mfe",
     "build:site": "npm run build && node tools/assemble-site.mjs",
-    "lint": "nx run-many -t lint"
+    "lint": "nx run-many -t lint",
+    "api:admin": "node tools/api-admin.mjs"
   },
   "dependencies": {
     "@angular/common": "~22.2.0",
@@ -23,8 +24,6 @@
     "@angular/forms": "~22.2.0",
     "@angular/platform-browser": "~22.2.0",
     "@angular/router": "~22.2.0",
-    "@supabase/postgrest-js": "^2.119.2",
-    "@supabase/supabase-js": "^2.119.2",
     "rxjs": "~7.8.0"
   },
   "devDependencies": {
@@ -62,6 +61,7 @@
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
+    "msw": "2.15.0",
     "nx": "24.0.0",
     "prettier": "^3.8.1",
     "ts-node": "10.9.1",

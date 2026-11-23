@@ -18,8 +18,14 @@
         "browser": "apps/report-mfe/src/main.ts",
         "tsConfig": "apps/report-mfe/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": [],
-        "styles": ["apps/report-mfe/src/styles.scss"]
+        "assets": [
+          {
+            "glob": "runtime-config*.json",
+            "input": "config",
+            "output": "."
+          }
+        ],
+        "styles": ["apps/report-mfe/src/styles/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -35,7 +41,43 @@
               "maximumError": "16kb"
             }
           ],
-          "outputHashing": "none"
+          "outputHashing": "none",
+          "fileReplacements": [
+            {
+              "replace": "apps/report-mfe/src/environments/environment.ts",
+              "with": "apps/report-mfe/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "sit": {
+          "outputHashing": "none",
+          "fileReplacements": [
+            {
+              "replace": "apps/report-mfe/src/environments/environment.ts",
+              "with": "apps/report-mfe/src/environments/environment.sit.ts"
+            }
+          ],
+          "assets": [
+            {
+              "glob": "runtime-config*.json",
+              "input": "config",
+              "output": "."
+            },
+            {
+              "glob": "mockServiceWorker.js",
+              "input": "node_modules/msw/lib",
+              "output": "."
+            }
+          ]
+        },
+        "uat": {
+          "outputHashing": "none",
+          "fileReplacements": [
+            {
+              "replace": "apps/report-mfe/src/environments/environment.ts",
+              "with": "apps/report-mfe/src/environments/environment.uat.ts"
+            }
+          ]
         },
         "development": {
           "optimization": false,
@@ -54,6 +96,12 @@
       "configurations": {
         "production": {
           "buildTarget": "report-mfe:build:production"
+        },
+        "sit": {
+          "buildTarget": "report-mfe:build:sit"
+        },
+        "uat": {
+          "buildTarget": "report-mfe:build:uat"
         },
         "development": {
           "buildTarget": "report-mfe:build:development"

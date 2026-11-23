@@ -9,7 +9,7 @@
       "tagName": "mfe-customer",
       "entry": "mfe/customer/main.js",
       "version": "1.0.0",
-      "contractVersion": 1,
+      "contractVersion": 3,
       "requiredPermission": "customer:read",
       "loadTimeoutMs": 10000,
       "maxRetries": 2
@@ -22,7 +22,7 @@
       "tagName": "mfe-calendar",
       "entry": "mfe/calendar/main.js",
       "version": "1.0.0",
-      "contractVersion": 1,
+      "contractVersion": 3,
       "requiredPermission": "calendar:read",
       "loadTimeoutMs": 10000,
       "maxRetries": 2
@@ -35,7 +35,7 @@
       "tagName": "mfe-report",
       "entry": "mfe/report/main.js",
       "version": "1.0.0",
-      "contractVersion": 1,
+      "contractVersion": 3,
       "requiredPermission": "report:read",
       "loadTimeoutMs": 10000,
       "maxRetries": 2
@@ -48,7 +48,7 @@
       "tagName": "mfe-inventory",
       "entry": "mfe/inventory/main.js",
       "version": "0.0.1",
-      "contractVersion": 1,
+      "contractVersion": 3,
       "requiredPermission": "customer:read",
       "loadTimeoutMs": 5000,
       "maxRetries": 1

@@ -1,0 +1,59 @@
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/">{{ appTitle }}</a>
+    <div class="user">
+      @if (user(); as current) {
+        <span class="name">{{ current.displayName }}</span>
+        <span class="role">{{ roleLabel() }}</span>
+      }
+      <button type="button" class="button button-ghost" (click)="onLogout()">
+        登出
+      </button>
+    </div>
+  </header>
+
+  <nav class="sidebar" aria-label="模組選單">
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >首頁</a
+    >
+    @for (entry of visibleEntries(); track entry.name) {
+      <a [routerLink]="['/', entry.route]" routerLinkActive="active">{{
+        entry.title
+      }}</a>
+    }
+    @if (currentManifestStatus() === manifestStatus.LOADING) {
+      <span class="nav-note">讀取模組清單…</span>
+    }
+  </nav>
+
+  <main class="content">
+    @if (currentManifestStatus() === manifestStatus.ERROR) {
+      <div class="banner banner-error" role="alert">
+        <span>無法讀取模組清單：{{ manifestErrorMessage() }}</span>
+        <button type="button" class="button" (click)="onReloadManifest()">
+          重試
+        </button>
+      </div>
+    }
+    @if (selectedCustomer(); as customer) {
+      <div class="banner">
+        <span
+          >目前客戶：<strong>{{ customer.name }}</strong></span
+        >
+        <button
+          type="button"
+          class="button button-ghost"
+          (click)="onClearCustomer()"
+        >
+          清除
+        </button>
+      </div>
+    }
+    <router-outlet />
+  </main>
+
+  <app-toast-stack />
+</div>

@@ -1,0 +1,74 @@
+.event-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 10px;
+  background: var(--color-surface, #fff);
+
+  h3 {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 16px;
+  }
+
+  label {
+    display: grid;
+    gap: 4px;
+  }
+
+  .wide {
+    flex: 1 1 280px;
+  }
+}
+
+input,
+select,
+textarea {
+  padding: 6px 10px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 6px;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  padding: 4px 12px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 6px;
+  background: var(--color-surface, #fff);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &.primary {
+    border-color: var(--color-primary, #2563eb);
+    background: var(--color-primary, #2563eb);
+    color: #fff;
+  }
+
+  &.danger {
+    color: var(--color-danger, #dc2626);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.error {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--color-danger, #dc2626);
+}

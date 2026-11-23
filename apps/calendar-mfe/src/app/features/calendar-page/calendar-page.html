@@ -1,0 +1,102 @@
+<section class="calendar-page">
+  <header class="toolbar">
+    <div class="nav">
+      <button type="button" aria-label="上個月" (click)="onMoveMonth(-1)">
+        ‹
+      </button>
+      <h2>{{ monthTitle() }}</h2>
+      <button type="button" aria-label="下個月" (click)="onMoveMonth(1)">
+        ›
+      </button>
+    </div>
+    <div class="nav">
+      <button type="button" (click)="onGoToday()">本月</button>
+      <button
+        type="button"
+        [disabled]="status() === loadStatus.LOADING"
+        (click)="onReload()"
+      >
+        重新整理
+      </button>
+      @if (canWrite()) {
+        <button type="button" class="primary" (click)="onCreate()">
+          ＋ 新增行程
+        </button>
+      }
+    </div>
+  </header>
+
+  @if (selectedCustomer(); as customer) {
+    <div class="selection">
+      <span>
+        目前客戶：<strong>{{ customer.name }}</strong
+        >，本月有 {{ selectedEventCount() }} 筆行程
+      </span>
+      <label>
+        <input
+          type="checkbox"
+          [checked]="isOnlySelected()"
+          (change)="onOnlySelectedChange($event)"
+        />
+        只顯示這位客戶
+      </label>
+      <button type="button" (click)="onClearSelection()">清除選取</button>
+    </div>
+  } @else {
+    <p class="hint">在「客戶管理」選取客戶後，這裡會標示該客戶的行程。</p>
+  }
+
+  @if (isFormOpen()) {
+    <calendar-event-form
+      [initialDraft]="formDraft()"
+      [isEditing]="editingEvent() !== null"
+      [isSaving]="isSaving()"
+      [errorMessage]="formError()"
+      [customerOptions]="customerOptions()"
+      [isOptionsLoading]="isOptionsLoading()"
+      [optionsError]="optionsError()"
+      (saved)="onSave($event)"
+      (deleteRequested)="onRequestDelete()"
+      (cancelled)="onCloseForm()"
+    />
+  }
+
+  @switch (status()) {
+    @case (loadStatus.LOADING) {
+      <p class="hint">讀取行程…</p>
+    }
+    @case (loadStatus.ERROR) {
+      <p class="error" role="alert">
+        無法讀取行程：{{ loadError() }}
+        <button type="button" (click)="onReload()">重試</button>
+      </p>
+    }
+  }
+
+  <calendar-month-grid
+    [weeks]="weeks()"
+    [canWrite]="canWrite()"
+    [highlightCustomerId]="selectedCustomer()?.id ?? null"
+    (dayClicked)="onCreate($event)"
+    (eventClicked)="onEdit($event)"
+  />
+
+  @if (canWrite()) {
+    <p class="hint">點日期可新增行程，點行程可編輯或刪除。</p>
+  } @else {
+    <p class="hint">
+      你的帳號沒有 <code>calendar:write</code> 權限，只能查看行程。
+    </p>
+  }
+</section>
+
+<lib-confirm-dialog
+  [isOpen]="isConfirmingDelete()"
+  title="刪除行程"
+  [message]="deleteMessage()"
+  confirmText="刪除"
+  [isDanger]="true"
+  [isBusy]="isSaving()"
+  (confirmed)="onConfirmDelete()"
+  (cancelled)="onCancelDelete()"
+/>

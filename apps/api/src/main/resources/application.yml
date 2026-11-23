@@ -1,0 +1,45 @@
+# 正式環境的值都由環境變數提供（Render 的 Environment 設定）；
+# 本機開發把值寫在 config/application-local.yml（不進版控），以 local profile 啟動。
+spring:
+  application:
+    name: mfe-platform-api
+  datasource:
+    # Supabase 的 Session pooler（支援 IPv4），帳號為 Java 專用的 mfe_api
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      # 免費方案的連線數有限，保持小的連線池
+      maximum-pool-size: ${DB_POOL_SIZE:3}
+  flyway:
+    # 資料表放在獨立的 mfe schema；schema 已由管理者建立並授權給 mfe_api
+    schemas: mfe
+    default-schema: mfe
+    create-schemas: false
+  jackson:
+    # API 的 JSON 欄位一律大寫底線，例如 DISPLAY_NAME（前端架構規範：API 相關欄位全大寫）
+    property-naming-strategy: UPPER_SNAKE_CASE
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+app:
+  jwt:
+    # Base64 編碼、解碼後至少 32 bytes 的隨機值
+    secret: ${JWT_SECRET}
+    issuer: mfe-platform-api
+    access-token-ttl: 15m
+    refresh-token-ttl: 7d
+  cors:
+    # 以逗號分隔；正式環境設為 GitHub Pages 的網址
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:4201,http://localhost:4202,http://localhost:4203}

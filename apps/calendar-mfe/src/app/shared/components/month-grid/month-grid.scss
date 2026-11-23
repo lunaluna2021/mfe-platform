@@ -1,0 +1,102 @@
+.grid-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 10px;
+  background: var(--color-surface, #fff);
+}
+
+.grid {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th {
+  padding: 8px;
+  color: var(--color-muted, #6b7280);
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+td {
+  height: 96px;
+  padding: 6px;
+  vertical-align: top;
+  border: 1px solid var(--color-border, #e5e7eb);
+
+  &.outside {
+    background: #fafafa;
+    color: var(--color-muted, #6b7280);
+  }
+
+  &.today .day {
+    background: var(--color-primary, #2563eb);
+    color: #fff;
+  }
+}
+
+.day {
+  display: inline-block;
+  min-width: 22px;
+  margin-bottom: 4px;
+  border-radius: 999px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.event {
+  display: grid;
+  margin-bottom: 4px;
+  padding: 3px 6px;
+  border-left: 3px solid var(--color-border, #e5e7eb);
+  border-radius: 4px;
+  background: #f9fafb;
+  font-size: 12px;
+  line-height: 1.35;
+
+  &.highlight {
+    border-left-color: var(--color-primary, #2563eb);
+    background: var(--color-primary-soft, #e0eaff);
+  }
+}
+
+.time {
+  color: var(--color-muted, #6b7280);
+}
+
+.title {
+  font-weight: 600;
+}
+
+.customer {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 可編輯時日期與行程是按鈕 */
+button.day {
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-primary-soft, #e0eaff);
+  }
+}
+
+button.event {
+  width: 100%;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}

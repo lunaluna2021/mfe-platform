@@ -1,0 +1,50 @@
+{
+  "CUSTOMER_OPTIONS": [
+    { "ID": "mock-customer-1", "NAME": "晨光資訊有限公司" },
+    { "ID": "mock-customer-2", "NAME": "青禾食品股份有限公司" },
+    { "ID": "mock-customer-3", "NAME": "遠揚物流有限公司" },
+    { "ID": "mock-customer-4", "NAME": "藍海設計工作室" }
+  ],
+  "CALENDAR_EVENTS": [
+    {
+      "ID": "mock-event-1",
+      "CUSTOMER_ID": "mock-customer-1",
+      "DAY": 3,
+      "START_TIME": "10:00",
+      "TITLE": "需求訪談",
+      "NOTE": ""
+    },
+    {
+      "ID": "mock-event-2",
+      "CUSTOMER_ID": "mock-customer-2",
+      "DAY": 8,
+      "START_TIME": "14:30",
+      "TITLE": "報價說明",
+      "NOTE": "帶樣品"
+    },
+    {
+      "ID": "mock-event-3",
+      "CUSTOMER_ID": "mock-customer-1",
+      "DAY": 12,
+      "START_TIME": "09:30",
+      "TITLE": "系統展示",
+      "NOTE": ""
+    },
+    {
+      "ID": "mock-event-4",
+      "CUSTOMER_ID": "mock-customer-3",
+      "DAY": 18,
+      "START_TIME": "15:00",
+      "TITLE": "合約續約",
+      "NOTE": "確認運費條款"
+    },
+    {
+      "ID": "mock-event-5",
+      "CUSTOMER_ID": "mock-customer-4",
+      "DAY": 25,
+      "START_TIME": "11:00",
+      "TITLE": "初次拜訪",
+      "NOTE": ""
+    }
+  ]
+}

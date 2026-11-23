@@ -14,30 +14,27 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "paths": {
-      "@org/api/products": ["./packages/api/products/src/index.ts"],
-      "@org/models": ["./packages/shared/models/src/index.ts"],
-      "@org/shop/data": ["./packages/shop/data/src/index.ts"],
-      "@org/shop/feature-product-detail": [
-        "./packages/shop/feature-product-detail/src/index.ts"
-      ],
-      "@org/shop/feature-products": [
-        "./packages/shop/feature-products/src/index.ts"
-      ],
-      "@org/shop/shared-ui": ["./packages/shop/shared-ui/src/index.ts"],
+      "@mfe-platform/shared-auth": ["./libs/shared-auth/src/index.ts"],
       "@mfe-platform/shared-contracts": [
         "./libs/shared-contracts/src/index.ts"
       ],
-      "@mfe-platform/shared-auth": ["./libs/shared-auth/src/index.ts"],
-      "@mfe-platform/shared-permission": [
-        "./libs/shared-permission/src/index.ts"
-      ],
+      "@mfe-platform/shared-data-api": ["./libs/shared-data-api/src/index.ts"],
       "@mfe-platform/shared-event-bus": [
         "./libs/shared-event-bus/src/index.ts"
       ],
       "@mfe-platform/shared-mfe-element": [
         "./libs/shared-mfe-element/src/index.ts"
-      ]
-    }
+      ],
+      "@mfe-platform/shared-mfe-element/standalone": [
+        "./libs/shared-mfe-element/src/standalone.ts"
+      ],
+      "@mfe-platform/shared-mocks": ["./libs/shared-mocks/src/index.ts"],
+      "@mfe-platform/shared-permission": [
+        "./libs/shared-permission/src/index.ts"
+      ],
+      "@mfe-platform/shared-ui": ["./libs/shared-ui/src/index.ts"]
+    },
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules", "tmp"]
 }

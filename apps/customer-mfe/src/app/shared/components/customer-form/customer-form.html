@@ -1,0 +1,57 @@
+<form class="customer-form" (submit)="onSubmit($event)" novalidate>
+  <h2>{{ isEditing() ? '編輯客戶' : '新增客戶' }}</h2>
+  <label>
+    公司名稱
+    <input
+      [value]="draft().name"
+      [maxLength]="limits.NAME"
+      (input)="onTextInput('name', $event)"
+    />
+  </label>
+  <label>
+    產業
+    <input
+      [value]="draft().industry"
+      [maxLength]="limits.INDUSTRY"
+      placeholder="未分類"
+      (input)="onTextInput('industry', $event)"
+    />
+  </label>
+  <label>
+    聯絡人
+    <input
+      [value]="draft().contact"
+      [maxLength]="limits.CONTACT"
+      (input)="onTextInput('contact', $event)"
+    />
+  </label>
+  <label>
+    電話
+    <input
+      [value]="draft().phone"
+      [maxLength]="limits.PHONE"
+      (input)="onTextInput('phone', $event)"
+    />
+  </label>
+  <label>
+    等級
+    <select [value]="draft().level" (change)="onLevelChange($event)">
+      @for (level of levels; track level) {
+        <option [value]="level" [selected]="level === draft().level">
+          {{ level }}
+        </option>
+      }
+    </select>
+  </label>
+  <div class="actions">
+    <button type="submit" class="primary" [disabled]="isSaving()">
+      {{ isSaving() ? '儲存中…' : '儲存' }}
+    </button>
+    <button type="button" [disabled]="isSaving()" (click)="onCancel()">
+      取消
+    </button>
+  </div>
+  @if (validationError() ?? errorMessage(); as message) {
+    <p class="error" role="alert">{{ message }}</p>
+  }
+</form>

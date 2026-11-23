@@ -1,0 +1,79 @@
+<form class="event-form" (submit)="onSubmit($event)" novalidate>
+  <h3>{{ isEditing() ? '編輯行程' : '新增行程' }}</h3>
+  <label>
+    日期
+    <input
+      type="date"
+      [value]="draft().date"
+      (input)="onFieldInput('date', $event)"
+    />
+  </label>
+  <label>
+    時間
+    <input
+      type="time"
+      [value]="draft().time"
+      (input)="onFieldInput('time', $event)"
+    />
+  </label>
+  <label>
+    客戶
+    <select
+      [value]="draft().customerId"
+      (change)="onFieldInput('customerId', $event)"
+    >
+      <option value="">
+        {{ isOptionsLoading() ? '讀取客戶清單…' : '請選擇客戶' }}
+      </option>
+      @for (customer of customerOptions(); track customer.id) {
+        <option
+          [value]="customer.id"
+          [selected]="customer.id === draft().customerId"
+        >
+          {{ customer.name }}
+        </option>
+      }
+    </select>
+  </label>
+  <label class="wide">
+    主題
+    <input
+      [value]="draft().title"
+      [maxLength]="limits.TITLE"
+      (input)="onFieldInput('title', $event)"
+    />
+  </label>
+  <label class="wide">
+    備註
+    <textarea
+      rows="2"
+      [value]="draft().note"
+      [maxLength]="limits.NOTE"
+      (input)="onFieldInput('note', $event)"
+    ></textarea>
+  </label>
+  <div class="actions">
+    <button type="submit" class="primary" [disabled]="isSaving()">
+      {{ isSaving() ? '處理中…' : '儲存' }}
+    </button>
+    @if (isEditing()) {
+      <button
+        type="button"
+        class="danger"
+        [disabled]="isSaving()"
+        (click)="onDelete()"
+      >
+        刪除
+      </button>
+    }
+    <button type="button" [disabled]="isSaving()" (click)="onCancel()">
+      取消
+    </button>
+  </div>
+  @if (optionsError(); as message) {
+    <p class="error" role="alert">無法讀取客戶清單：{{ message }}</p>
+  }
+  @if (validationError() ?? errorMessage(); as message) {
+    <p class="error" role="alert">{{ message }}</p>
+  }
+</form>

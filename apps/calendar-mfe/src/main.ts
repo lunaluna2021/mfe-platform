@@ -1,5 +1,5 @@
-import { bootstrapMfeElement } from '@mfe-platform/shared-mfe-element';
-import { CalendarApp } from './app/calendar-app';
+import { bootstrap } from './bootstrap';
 
-// 標籤名稱必須與 manifest.json 的 tagName 相同，否則 Host 會等到逾時
-void bootstrapMfeElement({ tagName: 'mfe-calendar', component: CalendarApp });
+// 啟動流程在 bootstrap.ts：依環境決定是否先啟動 MSW 模擬 API，再註冊 Custom Element。
+// 註冊的標籤名稱（core/const/app.const.ts 的 TAG_NAME）必須與 manifest.json 的 tagName 相同。
+void bootstrap();

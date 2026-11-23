@@ -1,0 +1,40 @@
+{
+  "CUSTOMERS": [
+    {
+      "ID": "mock-customer-1",
+      "NAME": "晨光資訊有限公司",
+      "INDUSTRY": "軟體",
+      "CONTACT": "李先生",
+      "PHONE": "02-2345-0001",
+      "LEVEL": "A",
+      "CREATED_AT": "2026-06-01T02:00:00Z"
+    },
+    {
+      "ID": "mock-customer-2",
+      "NAME": "青禾食品股份有限公司",
+      "INDUSTRY": "食品",
+      "CONTACT": "吳小姐",
+      "PHONE": "04-2233-0002",
+      "LEVEL": "B",
+      "CREATED_AT": "2026-07-01T02:00:00Z"
+    },
+    {
+      "ID": "mock-customer-3",
+      "NAME": "遠揚物流有限公司",
+      "INDUSTRY": "物流",
+      "CONTACT": "周先生",
+      "PHONE": "07-3344-0003",
+      "LEVEL": "A",
+      "CREATED_AT": "2026-08-01T02:00:00Z"
+    },
+    {
+      "ID": "mock-customer-4",
+      "NAME": "藍海設計工作室",
+      "INDUSTRY": "設計",
+      "CONTACT": "",
+      "PHONE": "",
+      "LEVEL": "C",
+      "CREATED_AT": "2026-10-15T02:00:00Z"
+    }
+  ]
+}

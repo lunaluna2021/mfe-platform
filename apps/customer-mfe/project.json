@@ -18,8 +18,14 @@
         "browser": "apps/customer-mfe/src/main.ts",
         "tsConfig": "apps/customer-mfe/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": [],
-        "styles": ["apps/customer-mfe/src/styles.scss"]
+        "assets": [
+          {
+            "glob": "runtime-config*.json",
+            "input": "config",
+            "output": "."
+          }
+        ],
+        "styles": ["apps/customer-mfe/src/styles/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -35,7 +41,43 @@
               "maximumError": "16kb"
             }
           ],
-          "outputHashing": "none"
+          "outputHashing": "none",
+          "fileReplacements": [
+            {
+              "replace": "apps/customer-mfe/src/environments/environment.ts",
+              "with": "apps/customer-mfe/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "sit": {
+          "outputHashing": "none",
+          "fileReplacements": [
+            {
+              "replace": "apps/customer-mfe/src/environments/environment.ts",
+              "with": "apps/customer-mfe/src/environments/environment.sit.ts"
+            }
+          ],
+          "assets": [
+            {
+              "glob": "runtime-config*.json",
+              "input": "config",
+              "output": "."
+            },
+            {
+              "glob": "mockServiceWorker.js",
+              "input": "node_modules/msw/lib",
+              "output": "."
+            }
+          ]
+        },
+        "uat": {
+          "outputHashing": "none",
+          "fileReplacements": [
+            {
+              "replace": "apps/customer-mfe/src/environments/environment.ts",
+              "with": "apps/customer-mfe/src/environments/environment.uat.ts"
+            }
+          ]
         },
         "development": {
           "optimization": false,
@@ -54,6 +96,12 @@
       "configurations": {
         "production": {
           "buildTarget": "customer-mfe:build:production"
+        },
+        "sit": {
+          "buildTarget": "customer-mfe:build:sit"
+        },
+        "uat": {
+          "buildTarget": "customer-mfe:build:uat"
         },
         "development": {
           "buildTarget": "customer-mfe:build:development"

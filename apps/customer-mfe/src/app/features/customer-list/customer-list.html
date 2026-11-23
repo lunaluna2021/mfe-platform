@@ -1,0 +1,126 @@
+<section class="customer-list">
+  <div class="toolbar">
+    <input
+      type="search"
+      class="search"
+      placeholder="搜尋公司、產業、聯絡人或電話"
+      aria-label="搜尋客戶"
+      [value]="keyword()"
+      (input)="onKeywordInput($event)"
+    />
+    <span class="count">共 {{ visibleCustomers().length }} 筆</span>
+    <button
+      type="button"
+      [disabled]="status() === loadStatus.LOADING"
+      (click)="onReload()"
+    >
+      重新整理
+    </button>
+    @if (canWrite()) {
+      <button type="button" class="primary" (click)="onCreate()">
+        ＋ 新增客戶
+      </button>
+    }
+  </div>
+
+  @if (isFormOpen()) {
+    <customer-form
+      [initialDraft]="formDraft()"
+      [isEditing]="editingCustomer() !== null"
+      [isSaving]="isSaving()"
+      [errorMessage]="formError()"
+      (saved)="onSave($event)"
+      (cancelled)="onCloseForm()"
+    />
+  }
+
+  @switch (status()) {
+    @case (loadStatus.LOADING) {
+      <p class="hint">讀取客戶資料…</p>
+    }
+    @case (loadStatus.ERROR) {
+      <p class="error" role="alert">
+        無法讀取客戶資料：{{ loadError() }}
+        <button type="button" (click)="onReload()">重試</button>
+      </p>
+    }
+  }
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>公司名稱</th>
+          <th>產業</th>
+          <th>聯絡人</th>
+          <th>電話</th>
+          <th>等級</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (customer of visibleCustomers(); track customer.id) {
+          <tr [class.selected]="customer.id === selectedId()">
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.industry }}</td>
+            <td>{{ customer.contact || '—' }}</td>
+            <td class="mono">{{ customer.phone || '—' }}</td>
+            <td>
+              <span class="level" [class]="'level-' + customer.level">{{
+                customer.level
+              }}</span>
+            </td>
+            <td class="actions">
+              <button type="button" (click)="onSelect(customer)">
+                {{ customer.id === selectedId() ? '已選取' : '選取' }}
+              </button>
+              @if (canOpenCalendar()) {
+                <button type="button" (click)="onScheduleVisit(customer)">
+                  安排拜訪
+                </button>
+              }
+              @if (canWrite()) {
+                <button type="button" (click)="onEdit(customer)">編輯</button>
+                <button
+                  type="button"
+                  class="danger"
+                  (click)="onRequestDelete(customer)"
+                >
+                  刪除
+                </button>
+              }
+            </td>
+          </tr>
+        } @empty {
+          @if (status() === loadStatus.READY) {
+            <tr>
+              <td colspan="6" class="empty">
+                {{ keyword() ? '找不到符合的客戶' : '目前沒有客戶資料' }}
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (!canWrite()) {
+    <p class="hint">
+      你的帳號沒有
+      <code>customer:write</code> 權限，因此看不到新增、編輯與刪除。
+    </p>
+  }
+</section>
+
+<lib-confirm-dialog
+  [isOpen]="pendingDelete() !== null"
+  title="刪除客戶"
+  [message]="
+    '確定要刪除「' + (pendingDelete()?.name ?? '') + '」嗎？刪除後無法復原。'
+  "
+  confirmText="刪除"
+  [isDanger]="true"
+  [isBusy]="isDeleting()"
+  (confirmed)="onConfirmDelete()"
+  (cancelled)="onCancelDelete()"
+/>

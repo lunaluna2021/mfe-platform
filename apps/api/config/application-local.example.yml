@@ -1,0 +1,10 @@
+# 本機開發設定範例：複製成 application-local.yml 並填入實際值（該檔不進版控）
+spring:
+  datasource:
+    url: jdbc:postgresql://<pooler-host>:5432/postgres?sslmode=require
+    username: mfe_api.<project-ref>
+    password: <資料庫密碼>
+app:
+  jwt:
+    # Base64 編碼、解碼後至少 32 bytes 的隨機值，例如：node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"
+    secret: <JWT 金鑰>

@@ -1,0 +1,116 @@
+@if (canRead()) {
+  <section class="report-dashboard">
+    @switch (status()) {
+      @case (loadStatus.LOADING) {
+        <p class="hint">統計中…</p>
+      }
+      @case (loadStatus.ERROR) {
+        <p class="error" role="alert">
+          無法取得報表：{{ loadError() }}
+          <button type="button" (click)="onReload()">重試</button>
+        </p>
+      }
+    }
+
+    <div class="summary">
+      <report-stat-tile
+        [label]="'近 ' + months + ' 個月新客戶'"
+        [value]="totals().newCustomers"
+      />
+      <report-stat-tile
+        [label]="'近 ' + months + ' 個月拜訪次數'"
+        [value]="totals().visits"
+      />
+      <report-stat-tile label="客戶總數" [value]="customerTotal()" />
+    </div>
+
+    <div class="toolbar">
+      <h2>每月活動</h2>
+      <div class="actions">
+        <button
+          type="button"
+          [disabled]="status() === loadStatus.LOADING"
+          (click)="onReload()"
+        >
+          重新整理
+        </button>
+        @if (canExport()) {
+          <button
+            type="button"
+            class="primary"
+            [disabled]="activity().length === 0"
+            (click)="onExportCsv()"
+          >
+            匯出 CSV
+          </button>
+        } @else {
+          <span class="hint">需要 <code>report:export</code> 權限才能匯出</span>
+        }
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>月份</th>
+            <th class="num">新客戶數</th>
+            <th class="num">拜訪次數</th>
+            <th class="bar-col">拜訪比較</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of activity(); track row.month) {
+            <tr>
+              <td class="mono">{{ row.month }}</td>
+              <td class="num">{{ row.newCustomers }}</td>
+              <td class="num">{{ row.visits }}</td>
+              <td class="bar-col">
+                <span
+                  class="bar"
+                  [style.width]="visitsBarWidth(row.visits)"
+                ></span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <h2>各產業客戶數</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>產業</th>
+            <th class="num">客戶數</th>
+            <th class="bar-col">比較</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of industries(); track item.industry) {
+            <tr>
+              <td>{{ item.industry }}</td>
+              <td class="num">{{ item.customerCount }}</td>
+              <td class="bar-col">
+                <span
+                  class="bar"
+                  [style.width]="industryBarWidth(item.customerCount)"
+                ></span>
+              </td>
+            </tr>
+          } @empty {
+            @if (status() === loadStatus.READY) {
+              <tr>
+                <td colspan="3" class="hint">目前沒有客戶資料</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="hint">新客戶依建立時間、拜訪依行程日期統計，以台北時間分月。</p>
+  </section>
+} @else {
+  <p class="hint">你的帳號沒有 <code>report:read</code> 權限，無法查看報表。</p>
+}

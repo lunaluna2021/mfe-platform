@@ -1,0 +1,49 @@
+{
+  "USERS": [
+    {
+      "ID": "mock-user-admin",
+      "EMAIL": "admin@example.com",
+      "DISPLAY_NAME": "林雅婷（模擬）",
+      "ROLE": "admin",
+      "PERMISSIONS": [
+        "customer:read",
+        "customer:write",
+        "calendar:read",
+        "calendar:write",
+        "report:read",
+        "report:export"
+      ]
+    },
+    {
+      "ID": "mock-user-manager",
+      "EMAIL": "manager@example.com",
+      "DISPLAY_NAME": "陳志明（模擬）",
+      "ROLE": "manager",
+      "PERMISSIONS": [
+        "customer:read",
+        "calendar:read",
+        "report:read",
+        "report:export"
+      ]
+    },
+    {
+      "ID": "mock-user-sales",
+      "EMAIL": "sales@example.com",
+      "DISPLAY_NAME": "王小華（模擬）",
+      "ROLE": "sales",
+      "PERMISSIONS": [
+        "customer:read",
+        "customer:write",
+        "calendar:read",
+        "calendar:write"
+      ]
+    },
+    {
+      "ID": "mock-user-viewer",
+      "EMAIL": "viewer@example.com",
+      "DISPLAY_NAME": "張美玲（模擬）",
+      "ROLE": "viewer",
+      "PERMISSIONS": ["customer:read", "calendar:read"]
+    }
+  ]
+}

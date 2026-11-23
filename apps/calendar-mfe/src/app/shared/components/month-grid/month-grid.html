@@ -1,0 +1,60 @@
+<div class="grid-wrap">
+  <table class="grid">
+    <thead>
+      <tr>
+        @for (weekday of weekdays; track weekday) {
+          <th scope="col">{{ weekday }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (week of weeks(); track $index) {
+        <tr>
+          @for (cell of week; track cell.date) {
+            <td [class.outside]="!cell.isInMonth" [class.today]="cell.isToday">
+              @if (canWrite()) {
+                <button
+                  type="button"
+                  class="day"
+                  [attr.aria-label]="'新增 ' + cell.date + ' 的行程'"
+                  (click)="onDayClick(cell.date)"
+                >
+                  {{ cell.day }}
+                </button>
+              } @else {
+                <span class="day">{{ cell.day }}</span>
+              }
+              @for (event of cell.events; track event.id) {
+                @if (canWrite()) {
+                  <button
+                    type="button"
+                    class="event"
+                    [class.highlight]="
+                      event.customerId === highlightCustomerId()
+                    "
+                    (click)="onEventClick(event)"
+                  >
+                    <span class="time">{{ event.time }}</span>
+                    <span class="title">{{ event.title }}</span>
+                    <span class="customer">{{ event.customerName }}</span>
+                  </button>
+                } @else {
+                  <div
+                    class="event"
+                    [class.highlight]="
+                      event.customerId === highlightCustomerId()
+                    "
+                  >
+                    <span class="time">{{ event.time }}</span>
+                    <span class="title">{{ event.title }}</span>
+                    <span class="customer">{{ event.customerName }}</span>
+                  </div>
+                }
+              }
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

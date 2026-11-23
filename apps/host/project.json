@@ -24,9 +24,14 @@
             "glob": "manifest.json",
             "input": "config",
             "output": "."
+          },
+          {
+            "glob": "runtime-config*.json",
+            "input": "config",
+            "output": "."
           }
         ],
-        "styles": ["apps/host/src/styles.scss"]
+        "styles": ["apps/host/src/styles/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -42,12 +47,60 @@
               "maximumError": "16kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "fileReplacements": [
+            {
+              "replace": "apps/host/src/environments/environment.ts",
+              "with": "apps/host/src/environments/environment.prod.ts"
+            }
+          ]
         },
         "development": {
           "optimization": false,
           "extractLicenses": false,
           "sourceMap": true
+        },
+        "sit": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "8kb",
+              "maximumError": "16kb"
+            }
+          ],
+          "outputHashing": "all",
+          "fileReplacements": [
+            {
+              "replace": "apps/host/src/environments/environment.ts",
+              "with": "apps/host/src/environments/environment.sit.ts"
+            }
+          ]
+        },
+        "uat": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "8kb",
+              "maximumError": "16kb"
+            }
+          ],
+          "outputHashing": "all",
+          "fileReplacements": [
+            {
+              "replace": "apps/host/src/environments/environment.ts",
+              "with": "apps/host/src/environments/environment.uat.ts"
+            }
+          ]
         }
       }
     },
@@ -68,6 +121,12 @@
         },
         "development": {
           "buildTarget": "host:build:development"
+        },
+        "sit": {
+          "buildTarget": "host:build:sit"
+        },
+        "uat": {
+          "buildTarget": "host:build:uat"
         }
       }
     },

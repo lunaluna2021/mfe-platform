@@ -5,18 +5,22 @@
  * 不保存任何狀態，所以多份副本之間不會不一致。
  */
 
-/** 平台所有的權限代碼，格式為「資源:動作」 */
+/**
+ * 平台所有的權限代碼，格式為「資源:動作」。
+ * 必須與資料庫 role_permissions.permission 的 check 條件一致（supabase/schema.sql）。
+ */
 export const PERMISSIONS = [
   'customer:read',
   'customer:write',
   'calendar:read',
+  'calendar:write',
   'report:read',
   'report:export',
 ] as const;
 
 export type Permission = (typeof PERMISSIONS)[number];
 
-/** 平台角色；角色對應的權限由 shared-permission 決定 */
+/** 平台角色；每個角色擁有哪些權限記錄在資料庫的 role_permissions 表 */
 export const ROLES = ['admin', 'manager', 'sales', 'viewer'] as const;
 
 export type Role = (typeof ROLES)[number];

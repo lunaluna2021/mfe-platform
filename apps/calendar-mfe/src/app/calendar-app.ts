@@ -2,96 +2,76 @@ import {
   ChangeDetectionStrategy,
   Component,
   ViewEncapsulation,
+  booleanAttribute,
   computed,
+  effect,
+  inject,
   input,
   signal,
 } from '@angular/core';
 import type { MfeHostContext } from '@mfe-platform/shared-contracts';
-import { createMfeEventBus } from '@mfe-platform/shared-event-bus';
-import {
-  addMonths,
-  buildDemoEvents,
-  buildMonthGrid,
-  toDateKey,
-  type MonthCursor,
-} from './calendar.data';
-
-export const CALENDAR_MFE_NAME = 'calendar';
-const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'] as const;
+import { MfeContextStore } from '@mfe-platform/shared-mfe-element';
+import { MfeStandaloneSession } from '@mfe-platform/shared-mfe-element/standalone';
+import { environment } from '../environments/environment';
+import { CalendarPage } from './features/calendar-page/calendar-page';
 
 /**
  * 行事曆 MFE 的根元件，註冊為 <mfe-calendar>。
- * 目前選取的客戶來自 Host 的 context（由客戶管理 MFE 選取），兩個 MFE 不直接溝通。
+ *
+ * - 被 Host 載入：Host 以 property 設定 context（使用者、權限、選取的客戶、API 網址與 token）。
+ * - 獨立執行（元素加上 is-standalone 屬性）：用 @defer 載入共用的登入外框，自己取得 context。
+ *
+ * 目前的 context 寫入 MfeContextStore，頁面與 API interceptor 都從那裡讀取。
  */
 @Component({
   selector: 'calendar-root',
-  templateUrl: './calendar-app.html',
-  styleUrl: './calendar-app.scss',
+  imports: [MfeStandaloneSession, CalendarPage],
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    @if (isStandalone() && !context()) {
+      <!-- 只有獨立執行時才下載登入外框 -->
+      @defer (on immediate) {
+        <lib-mfe-standalone-session
+          appTitle="行事曆"
+          [configUrl]="runtimeConfigFile"
+          (contextChange)="standaloneContext.set($event)"
+        />
+      } @loading {
+        <p class="hint">載入登入元件…</p>
+      }
+    }
+    @if (activeContext()) {
+      <calendar-page />
+    }
+  `,
+  styles: `
+    :host {
+      display: block;
+      color: var(--color-text, #1f2937);
+      font-family: var(--font-sans, system-ui, sans-serif);
+      font-size: 14px;
+    }
+    .hint {
+      margin: 0;
+      color: var(--color-muted, #6b7280);
+    }
+  `,
 })
 export class CalendarApp {
+  /** Host 以 element property 設定 */
   readonly context = input<MfeHostContext | null>(null);
+  /** 獨立執行頁在元素上加 is-standalone 屬性（Angular Elements 把 isStandalone 對應成 is-standalone） */
+  readonly isStandalone = input(false, { transform: booleanAttribute });
 
-  private readonly bus = createMfeEventBus(CALENDAR_MFE_NAME);
-  private readonly today = new Date();
-  private readonly todayKey = toDateKey(
-    this.today.getFullYear(),
-    this.today.getMonth(),
-    this.today.getDate(),
+  protected readonly runtimeConfigFile = environment.runtimeConfigFile;
+  protected readonly standaloneContext = signal<MfeHostContext | null>(null);
+  protected readonly activeContext = computed(
+    () => this.context() ?? this.standaloneContext(),
   );
 
-  protected readonly weekdays = WEEKDAYS;
-  protected readonly cursor = signal<MonthCursor>({
-    year: this.today.getFullYear(),
-    month: this.today.getMonth(),
-  });
-  protected readonly onlySelected = signal(false);
-
-  protected readonly selectedCustomer = computed(
-    () => this.context()?.selectedCustomer ?? null,
-  );
-  protected readonly monthTitle = computed(
-    () => `${this.cursor().year} 年 ${this.cursor().month + 1} 月`,
-  );
-
-  private readonly monthEvents = computed(() => buildDemoEvents(this.cursor()));
-
-  protected readonly selectedEventCount = computed(() => {
-    const customer = this.selectedCustomer();
-    return customer
-      ? this.monthEvents().filter((event) => event.customerId === customer.id)
-          .length
-      : 0;
-  });
-
-  protected readonly weeks = computed(() => {
-    const customer = this.selectedCustomer();
-    const events =
-      customer && this.onlySelected()
-        ? this.monthEvents().filter((event) => event.customerId === customer.id)
-        : this.monthEvents();
-    return buildMonthGrid(this.cursor(), events, this.todayKey);
-  });
-
-  protected moveMonth(delta: number): void {
-    this.cursor.update((cursor) => addMonths(cursor, delta));
-  }
-
-  protected goToday(): void {
-    this.cursor.set({
-      year: this.today.getFullYear(),
-      month: this.today.getMonth(),
-    });
-  }
-
-  protected toggleOnlySelected(event: Event): void {
-    this.onlySelected.set((event.target as HTMLInputElement).checked);
-  }
-
-  /** 清除是平台層級的狀態，請 Host 處理，Host 再透過 context 通知所有 MFE */
-  protected clearSelection(): void {
-    this.onlySelected.set(false);
-    this.bus.emit('customer:selected', { customer: null });
+  constructor() {
+    const contextStore = inject(MfeContextStore);
+    effect(() => contextStore.setContext(this.activeContext()));
   }
 }
