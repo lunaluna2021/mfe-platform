@@ -1,0 +1,9 @@
+{
+  "name": "shared-permission",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-permission/src",
+  "projectType": "library",
+  "tags": ["type:shared"],
+  "// targets": "to see all targets run: nx show project shared-permission --web",
+  "targets": {}
+}

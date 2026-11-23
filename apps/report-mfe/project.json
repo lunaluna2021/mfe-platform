@@ -1,0 +1,86 @@
+{
+  "name": "report-mfe",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "report",
+  "sourceRoot": "apps/report-mfe/src",
+  "tags": ["type:mfe"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": {
+          "base": "dist/mfe/report",
+          "browser": ""
+        },
+        "browser": "apps/report-mfe/src/main.ts",
+        "tsConfig": "apps/report-mfe/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [],
+        "styles": ["apps/report-mfe/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "8kb",
+              "maximumError": "16kb"
+            }
+          ],
+          "outputHashing": "none"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      }
+    },
+    "serve": {
+      "continuous": true,
+      "readyWhen": {
+        "signal": true
+      },
+      "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
+      "configurations": {
+        "production": {
+          "buildTarget": "report-mfe:build:production"
+        },
+        "development": {
+          "buildTarget": "report-mfe:build:development"
+        }
+      },
+      "options": {
+        "port": 4203
+      }
+    },
+    "test": {
+      "executor": "@angular/build:unit-test",
+      "options": {
+        "watch": false
+      }
+    },
+    "serve-static": {
+      "continuous": true,
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"],
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "report-mfe:build",
+        "staticFilePath": "dist/mfe/report",
+        "port": 4203
+      }
+    }
+  }
+}

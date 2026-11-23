@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <title>客戶管理 MFE（獨立執行）</title>
+    <!-- 相對路徑：不論放在哪個目錄都能找到同目錄下的 main.js -->
+    <base href="./" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <p class="harness-note">
+      獨立執行模式：用示範的 context 啟動這個 MFE，方便單獨開發。在平台上由 Host
+      提供 context。 事件會輸出到瀏覽器主控台。
+    </p>
+    <mfe-customer></mfe-customer>
+
+    <script type="module">
+      const demoContext = {
+        contractVersion: 1,
+        user: { id: 'u-harness', displayName: '測試使用者', roles: ['admin'] },
+        permissions: [
+          'customer:read',
+          'customer:write',
+          'calendar:read',
+          'report:read',
+          'report:export',
+        ],
+        selectedCustomer: null,
+        locale: 'zh-TW',
+      };
+      const element = document.querySelector('mfe-customer');
+      customElements.whenDefined('mfe-customer').then(() => {
+        element.context = demoContext;
+      });
+      for (const type of ['notify', 'navigate', 'customer:selected']) {
+        window.addEventListener('mfe:' + type, (event) => {
+          console.log('[harness] 收到事件', event.detail);
+          if (type === 'customer:selected') {
+            element.context = {
+              ...element.context,
+              selectedCustomer: event.detail.payload.customer,
+            };
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+{
+  "name": "customer-mfe",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "customer",
+  "sourceRoot": "apps/customer-mfe/src",
+  "tags": ["type:mfe"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": {
+          "base": "dist/mfe/customer",
+          "browser": ""
+        },
+        "browser": "apps/customer-mfe/src/main.ts",
+        "tsConfig": "apps/customer-mfe/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [],
+        "styles": ["apps/customer-mfe/src/styles.scss"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "8kb",
+              "maximumError": "16kb"
+            }
+          ],
+          "outputHashing": "none"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      }
+    },
+    "serve": {
+      "continuous": true,
+      "readyWhen": {
+        "signal": true
+      },
+      "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
+      "configurations": {
+        "production": {
+          "buildTarget": "customer-mfe:build:production"
+        },
+        "development": {
+          "buildTarget": "customer-mfe:build:development"
+        }
+      },
+      "options": {
+        "port": 4201
+      }
+    },
+    "test": {
+      "executor": "@angular/build:unit-test",
+      "options": {
+        "watch": false
+      }
+    },
+    "serve-static": {
+      "continuous": true,
+      "readyWhen": {
+        "signal": true
+      },
+      "dependsOn": ["build"],
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "customer-mfe:build",
+        "staticFilePath": "dist/mfe/customer",
+        "port": 4201
+      }
+    }
+  }
+}

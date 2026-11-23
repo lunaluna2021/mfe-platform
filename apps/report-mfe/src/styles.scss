@@ -1,0 +1,13 @@
+/* 只用於獨立執行頁；在平台上 MFE 的樣式都在 Shadow DOM 內 */
+body {
+  margin: 0;
+  padding: 24px;
+  background: #f3f4f6;
+  font-family: 'Noto Sans TC', 'Microsoft JhengHei', system-ui, sans-serif;
+}
+
+.harness-note {
+  margin: 0 0 16px;
+  color: #6b7280;
+  font-size: 13px;
+}

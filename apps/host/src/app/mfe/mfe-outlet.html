@@ -1,0 +1,30 @@
+@if (entry(); as current) {
+<header class="outlet-header">
+  <h1>{{ current.title }}</h1>
+  <span class="meta"
+    >v{{ current.version }} · &lt;{{ current.tagName }}&gt;</span
+  >
+</header>
+
+@switch (loadState().status) { @case ('loading') {
+<p class="status">正在載入{{ current.title }}…</p>
+} @case ('retrying') {
+<p class="status">
+  載入失敗，正在重試（第 {{ loadState().attempt }}／{{ loadState().maxAttempts
+  }} 次）…
+</p>
+} @case ('failed') {
+<div class="status error" role="alert">
+  <p>{{ current.title }}載入失敗：{{ loadState().error }}</p>
+  <button type="button" class="button" (click)="retry()">重新載入</button>
+</div>
+} @case ('incompatible') {
+<div class="status error" role="alert">
+  <p>無法載入：{{ loadState().error }}</p>
+</div>
+} } } @else {
+<p class="status">找不到這個模組。</p>
+}
+
+<!-- 固定存在的掛載點；MFE 的 Custom Element 由程式加入這裡 -->
+<div #mountPoint class="mount-point"></div>

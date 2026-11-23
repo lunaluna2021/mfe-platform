@@ -1,0 +1,10 @@
+{
+  "name": "shared-mfe-element",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-mfe-element/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["type:mfe-runtime"],
+  "// targets": "to see all targets run: nx show project shared-mfe-element --web",
+  "targets": {}
+}

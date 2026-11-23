@@ -1,0 +1,139 @@
+:host {
+  display: block;
+  color: var(--color-text, #1f2937);
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 14px;
+}
+
+.app {
+  display: grid;
+  gap: 12px;
+}
+
+.toolbar,
+.nav,
+.selection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.toolbar {
+  justify-content: space-between;
+}
+
+h2 {
+  margin: 0;
+  min-width: 120px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.selection {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--color-primary-soft, #e0eaff);
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.hint {
+  margin: 0;
+  color: var(--color-muted, #6b7280);
+}
+
+button {
+  padding: 4px 12px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 6px;
+  background: var(--color-surface, #fff);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-primary, #2563eb);
+  }
+}
+
+.grid-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 10px;
+  background: var(--color-surface, #fff);
+}
+
+.grid {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th {
+  padding: 8px;
+  color: var(--color-muted, #6b7280);
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+td {
+  height: 96px;
+  padding: 6px;
+  vertical-align: top;
+  border: 1px solid var(--color-border, #e5e7eb);
+
+  &.outside {
+    background: #fafafa;
+    color: var(--color-muted, #6b7280);
+  }
+
+  &.today .day {
+    background: var(--color-primary, #2563eb);
+    color: #fff;
+  }
+}
+
+.day {
+  display: inline-block;
+  min-width: 22px;
+  margin-bottom: 4px;
+  border-radius: 999px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.event {
+  display: grid;
+  margin-bottom: 4px;
+  padding: 3px 6px;
+  border-left: 3px solid var(--color-border, #e5e7eb);
+  border-radius: 4px;
+  background: #f9fafb;
+  font-size: 12px;
+  line-height: 1.35;
+
+  &.highlight {
+    border-left-color: var(--color-primary, #2563eb);
+    background: var(--color-primary-soft, #e0eaff);
+  }
+}
+
+.time {
+  color: var(--color-muted, #6b7280);
+}
+
+.title {
+  font-weight: 600;
+}
+
+.customer {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

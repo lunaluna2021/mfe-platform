@@ -1,0 +1,6 @@
+{
+  "/mfe": {
+    "target": "http://localhost:4300",
+    "secure": false
+  }
+}

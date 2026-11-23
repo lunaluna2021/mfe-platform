@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "mfes": [
+    {
+      "name": "customer",
+      "title": "客戶管理",
+      "description": "查詢、選取與新增客戶。選取的客戶會分享給其他模組。",
+      "route": "customers",
+      "tagName": "mfe-customer",
+      "entry": "mfe/customer/main.js",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "requiredPermission": "customer:read",
+      "loadTimeoutMs": 10000,
+      "maxRetries": 2
+    },
+    {
+      "name": "calendar",
+      "title": "行事曆",
+      "description": "月曆檢視拜訪行程，標示目前選取客戶的行程。",
+      "route": "calendar",
+      "tagName": "mfe-calendar",
+      "entry": "mfe/calendar/main.js",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "requiredPermission": "calendar:read",
+      "loadTimeoutMs": 10000,
+      "maxRetries": 2
+    },
+    {
+      "name": "report",
+      "title": "報表管理",
+      "description": "近六個月業績，有匯出權限時可下載 CSV。",
+      "route": "reports",
+      "tagName": "mfe-report",
+      "entry": "mfe/report/main.js",
+      "version": "1.0.0",
+      "contractVersion": 1,
+      "requiredPermission": "report:read",
+      "loadTimeoutMs": 10000,
+      "maxRetries": 2
+    },
+    {
+      "name": "inventory",
+      "title": "庫存管理（故障示範）",
+      "description": "刻意指向不存在的 JS，用來觀察重試、逾時與錯誤畫面。不需要時從 manifest 刪除即可。",
+      "route": "inventory",
+      "tagName": "mfe-inventory",
+      "entry": "mfe/inventory/main.js",
+      "version": "0.0.1",
+      "contractVersion": 1,
+      "requiredPermission": "customer:read",
+      "loadTimeoutMs": 5000,
+      "maxRetries": 1
+    }
+  ]
+}

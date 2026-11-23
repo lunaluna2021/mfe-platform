@@ -1,0 +1,71 @@
+/*
+ * 全站設計變數。
+ * CSS 自訂屬性會穿過 Shadow DOM 繼承下去，所以 MFE 雖然樣式隔離，
+ * 仍可用 var(--color-primary) 取得 Host 的配色；這是 Host 與 MFE 之間唯一的樣式契約。
+ */
+:root {
+  --color-primary: #2563eb;
+  --color-primary-soft: #e0eaff;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fde8e8;
+  --color-text: #1f2937;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-surface: #ffffff;
+  --color-background: #f3f4f6;
+  --color-hover: #f3f4f6;
+  --color-header: #1e293b;
+  --font-sans: 'Noto Sans TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+code {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-hover);
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.08);
+  }
+}
+
+.button-ghost {
+  border-color: var(--color-border);
+  background: transparent;
+  color: inherit;
+}

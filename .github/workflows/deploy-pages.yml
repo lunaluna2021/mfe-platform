@@ -1,0 +1,59 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一時間只部署一次；新的推送不中斷正在進行的部署
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint（含模組邊界檢查）
+        run: npx nx run-many -t lint
+
+      # 每個 MFE 是獨立的建置目標，可以分開建置與部署
+      - name: Build MFEs
+        run: npx nx run-many -t build -p customer-mfe calendar-mfe report-mfe --configuration=production
+
+      # GitHub Pages 的網址是 https://<帳號>.github.io/<repo>/，Host 的 base href 要對應 repo 名稱
+      - name: Build host
+        run: npx nx build host --configuration=production --base-href="/${{ github.event.repository.name }}/"
+
+      - name: Assemble site
+        run: node tools/assemble-site.mjs
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

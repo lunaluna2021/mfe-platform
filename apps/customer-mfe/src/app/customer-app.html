@@ -1,0 +1,97 @@
+<section class="app">
+  @if (!context()) {
+  <p class="notice">尚未取得 Host 提供的使用者資訊，操作功能暫不開放。</p>
+  }
+
+  <div class="toolbar">
+    <input
+      type="search"
+      class="search"
+      placeholder="搜尋編號、公司、產業或聯絡人"
+      aria-label="搜尋客戶"
+      [value]="keyword()"
+      (input)="keyword.set(readValue($event))"
+    />
+    <span class="count">共 {{ visibleCustomers().length }} 筆</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>編號</th>
+          <th>公司名稱</th>
+          <th>產業</th>
+          <th>聯絡人</th>
+          <th>電話</th>
+          <th>等級</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (customer of visibleCustomers(); track customer.id) {
+        <tr [class.selected]="customer.id === selectedId()">
+          <td class="mono">{{ customer.id }}</td>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.industry }}</td>
+          <td>{{ customer.contact }}</td>
+          <td class="mono">{{ customer.phone }}</td>
+          <td>
+            <span class="level" [class]="'level-' + customer.level"
+              >{{ customer.level }}</span
+            >
+          </td>
+          <td class="actions">
+            <button
+              type="button"
+              [disabled]="!context()"
+              (click)="select(customer)"
+            >
+              {{ customer.id === selectedId() ? '已選取' : '選取' }}
+            </button>
+            @if (canOpenCalendar()) {
+            <button type="button" (click)="scheduleVisit(customer)">
+              安排拜訪
+            </button>
+            }
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="7" class="empty">找不到符合的客戶</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (canWrite()) {
+  <form class="add-form" (submit)="addCustomer($event)">
+    <h2>新增客戶</h2>
+    <label>
+      公司名稱
+      <input
+        [value]="draftName()"
+        [maxLength]="nameMaxLength"
+        (input)="draftName.set(readValue($event))"
+      />
+    </label>
+    <label>
+      產業
+      <input
+        [value]="draftIndustry()"
+        [maxLength]="industryMaxLength"
+        (input)="draftIndustry.set(readValue($event))"
+      />
+    </label>
+    <button type="submit" class="primary">新增</button>
+    @if (formError()) {
+    <p class="error" role="alert">{{ formError() }}</p>
+    }
+  </form>
+  } @else if (context()) {
+  <p class="hint">
+    你的帳號沒有 <code>customer:write</code> 權限，因此看不到新增客戶的表單。
+  </p>
+  }
+</section>
